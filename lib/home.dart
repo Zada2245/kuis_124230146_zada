@@ -181,9 +181,7 @@ class HomePage extends StatelessWidget {
   void _logout(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(
-        builder: (context) => login(),
-      ), // Memakai nama class yang benar
+      MaterialPageRoute(builder: (context) => login()),
       (route) => false,
     );
   }

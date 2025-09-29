@@ -55,7 +55,7 @@ class DetailPage extends StatelessWidget {
                     SizedBox(height: 20),
                     _buildSectionTitle('Pemeran'),
                     SizedBox(height: 8),
-                    // Menampilkan daftar pemeran
+
                     Wrap(
                       spacing: 8.0,
                       runSpacing: 4.0,
@@ -73,7 +73,6 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  // Widget untuk menampilkan judul section
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
@@ -81,7 +80,6 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  // Widget untuk menampilkan info rating, genre, dan tahun
   Widget _buildInfoRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

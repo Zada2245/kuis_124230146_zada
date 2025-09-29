@@ -32,7 +32,7 @@ class _loginState extends State<login> {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
-    if (username == 'admin' && password == 'admin') {
+    if (username == 'admin' && password == '146') {
       _showSnackBar('Login Successful', true);
       // Navigate to the Home page and replace the current route
       Navigator.pushReplacement(

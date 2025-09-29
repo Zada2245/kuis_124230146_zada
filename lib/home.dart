@@ -1,17 +1,14 @@
-// lib/HomePage.dart
-
+import 'package:belajar/data/movie_data.dart';
 import 'package:belajar/detail_page.dart';
 import 'package:belajar/login.dart';
 import 'package:belajar/movie_model.dart';
-// <-- PERUBAHAN DI SINI
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
   final String username;
   HomePage({super.key, required this.username});
 
-  // Daftar data game dummy (tetap sama)
-  final List<MovieData> gameList = [
+  final List<MovieData> vieList = [
     MovieData(
       title: "Inception",
       year: 2010,
@@ -45,26 +42,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          "Game Store",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: Text("Movie App", style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0.5,
         actions: [
-          IconButton(
-            onPressed: () {
-              // 2. Mengganti "Profil()" dengan "ProfilePage()"
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => (),
-                ), // <-- PERUBAHAN DI SINI
-              );
-            },
-            icon: Icon(Icons.person_outline),
-          ),
           IconButton(
             onPressed: () => _logout(context),
             icon: Icon(Icons.logout),
@@ -89,9 +71,25 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            _buildSectionHeader("Game Unggulan"),
-            _buildSectionHeader("Daftar Game"),
-            _buildGameGrid(context),
+            _buildSectionHeader("Film Populer"),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: movieList.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  childAspectRatio: 2 / 3,
+                ),
+                itemBuilder: (context, index) {
+                  final movie = movieList[index];
+                  return _buildMovieCard(context, movie);
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -112,31 +110,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildGameGrid(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(16.0),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 16.0,
-        mainAxisSpacing: 16.0,
-        childAspectRatio: 0.65,
-      ),
-      itemCount: gameList.length,
-      itemBuilder: (context, index) {
-        final game = gameList[index];
-        return _buildGameCard(context, game);
-      },
-    );
-  }
-
-  Widget _buildGameCard(BuildContext context, MovieDatae) {
+  Widget _buildMovieCard(BuildContext context, MovieData movie) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DetailPage(game: game)),
+          MaterialPageRoute(builder: (context) => DetailPage(movie: movie)),
         );
       },
       child: Container(
@@ -159,9 +138,9 @@ class HomePage extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: Hero(
-                  tag: .title,
+                  tag: movie.title,
                   child: Image.network(
-                    game.imgUrl[0],
+                    movie.imgUrl,
                     fit: BoxFit.cover,
                     width: double.infinity,
                     errorBuilder: (context, error, stackTrace) => Center(
@@ -174,24 +153,21 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 2,
+                flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        game.movieUrl,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                  child: Center(
+                    child: Text(
+                      movie.title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        color: Colors.black,
                       ),
-                    ],
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               ),
@@ -205,7 +181,9 @@ class HomePage extends StatelessWidget {
   void _logout(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => login()),
+      MaterialPageRoute(
+        builder: (context) => login(),
+      ), // Memakai nama class yang benar
       (route) => false,
     );
   }

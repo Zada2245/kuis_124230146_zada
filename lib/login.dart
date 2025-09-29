@@ -37,7 +37,7 @@ class _loginState extends State<login> {
       // Navigate to the Home page and replace the current route
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Home()),
+        MaterialPageRoute(builder: (context) => HomePage(username: '')),
       );
     } else {
       _showSnackBar('Invalid username or password.', false);
